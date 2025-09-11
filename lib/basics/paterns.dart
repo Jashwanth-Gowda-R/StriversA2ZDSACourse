@@ -17,6 +17,12 @@ void main() {
   printStarPyramid(5);
   print('-------');
   printInvertedStarPyramid(5);
+  print('-------');
+  printDiamondStarPattern(6);
+  print('-------');
+  printHalfDiamondStarPattern(6);
+  print('-------');
+  printBinaryNumberTrianglePattern(6);
 }
 
 // Pattern-1: Rectangular Star Pattern
@@ -195,8 +201,8 @@ Result:
 
  */
 
-// for space formula is (n-i-1)
-// for star formula is (2*i+1)
+// for space formula is (<n)
+// for star formula is 2n-(2 * i + 1)
 void printInvertedStarPyramid(int n) {
   for (var i = 0; i < n; i++) {
     // space
@@ -213,6 +219,103 @@ void printInvertedStarPyramid(int n) {
     for (var j = 0; j < i; j++) {
       // Print a star without newline
       stdout.write(' ');
+    }
+    print('');
+  }
+}
+
+// Pattern - 9: Diamond Star Pattern
+
+/*
+Input Format: N = 6
+Result:   
+     *
+    ***
+   ***** 
+  *******
+ *********
+***********  
+***********
+ *********
+  *******
+   ***** 
+    ***    
+     *
+
+*/
+// pattern is combinarion of 2 above patterns
+void printDiamondStarPattern(int n) {
+  printStarPyramid(n);
+  printInvertedStarPyramid(n);
+}
+
+// Pattern - 10: Half Diamond Star Pattern
+
+/*
+ Input Format: N = 6
+Result:   
+     *            1
+     **           2
+     ***          3
+     ****         4
+     *****         5
+     ******       6
+     *****         7
+     ****         8
+     ***          9
+     **           10
+     *            11
+ */
+
+// outter loop should run 2n-1 or less than 2n
+// stop inner loop when row reaches more than n and minus it by 2n-1 to go backwards
+
+void printHalfDiamondStarPattern(int n) {
+  // brute force
+  // printRightAngledTriangle(n + 1);
+  // printInvertedRightPyramid(n - 1);
+
+  for (var i = 0; i < (2 * n); i++) {
+    var stars = i;
+    stars > n ? stars = (2 * n) - i : stars = i;
+    // print(stars);
+
+    for (var j = 0; j < stars; j++) {
+      // Print a star without newline
+      stdout.write('* ');
+    }
+    print('');
+  }
+}
+
+// Pattern - 11: Binary Number Triangle Pattern
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+1
+01
+101
+
+Input Format: N = 6
+Result:   
+1
+01
+101
+0101
+10101
+010101
+
+ */
+// even rows 1 is printed and on odds the 0 is printed 1st and rest is triangle and flip the number in nxt row start
+void printBinaryNumberTrianglePattern(int n) {
+  var start = 1;
+  for (var i = 0; i < n; i++) {
+    i % 2 == 0 ? start = 1 : start = 0;
+    for (var j = 0; j <= i; j++) {
+      stdout.write('$start');
+      start = 1 - start;
     }
     print('');
   }
