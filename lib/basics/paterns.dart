@@ -23,6 +23,8 @@ void main() {
   printHalfDiamondStarPattern(6);
   print('-------');
   printBinaryNumberTrianglePattern(6);
+  print('-------');
+  printNumberCrownPattern(6);
 }
 
 // Pattern-1: Rectangular Star Pattern
@@ -318,5 +320,54 @@ void printBinaryNumberTrianglePattern(int n) {
       start = 1 - start;
     }
     print('');
+  }
+}
+
+// Pattern - 12: Number Crown Pattern
+/*
+
+Examples:
+
+Input Format: N = 3
+Result: 
+1    1
+12  21
+123321
+
+Input Format: N = 6
+Result:              [number,space,number]
+1          1         1,10,1  
+12        21         2,8,2
+123       321        3,6,3
+1234    4321         4,4,4
+12345  54321         5,2,5
+123456654321         6,0,6
+
+ 1st for 1st number print number of rows in forwards and last number in reverse
+for space formula=(2 * n) - 1;
+end of loop make space -= 2;
+
+*/
+void printNumberCrownPattern(int n) {
+  var space = (2 * n) - 1;
+  for (var i = 0; i <= n; i++) {
+    // number
+    for (var j = 1; j <= i; j++) {
+      stdout.write(j);
+    }
+
+    // space
+    for (var j = 0; j < space; j++) {
+      // stdout.write('hi');
+      stdout.write(' ');
+    }
+
+    // number
+    for (var j = i; j >= 1; j--) {
+      // stdout.write('hi');
+      stdout.write(j);
+    }
+    print('');
+    space -= 2;
   }
 }
