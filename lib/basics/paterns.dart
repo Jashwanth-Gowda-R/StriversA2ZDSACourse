@@ -33,6 +33,12 @@ void main() {
   printReverseLetterTrianglePattern(6);
   print('-------');
   printAlphaRampPattern(5);
+  print('-------');
+  printAlphaHillPattern(6);
+  print('-------');
+  printAlphaTrianglePattern(6);
+  print('-------');
+  printSymmetricVoidPattern(6);
 }
 
 // Pattern-1: Rectangular Star Pattern
@@ -507,6 +513,193 @@ void printAlphaRampPattern(int n) {
       var ch = 'A'.codeUnitAt(0) + i;
       stdout.write('${String.fromCharCode(ch)} ');
     }
+    print('');
+  }
+}
+
+// Pattern - 17: Alpha-Hill Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+  A  
+ ABA 
+ABCBA
+
+
+Input Format: N = 6
+Result:   
+     A     
+    ABA    
+   ABCBA   
+  ABCDCBA  
+ ABCDEDCBA 
+ABCDEFEDCBA
+
+*/
+
+void printAlphaHillPattern(int n) {
+  for (var i = 0; i < n; i++) {
+    // space
+    for (var j = 0; j < (n - i - 1); j++) {
+      // Print a star without newline
+      stdout.write(' ');
+    }
+    // alphabets
+    var ch = 'A'.codeUnitAt(0);
+    // stdout.write('${String.fromCharCode(ch)} ');
+    var breakpoint = (2 * i + 1) / 2;
+    for (var j = 1; j <= (2 * i + 1); j++) {
+      // Print a star without newline
+      stdout.write(String.fromCharCode(ch));
+      if (j <= breakpoint) {
+        ch++;
+      } else {
+        ch--;
+      }
+    }
+    // space
+    for (var j = 0; j < (n - i - 1); j++) {
+      // Print a star without newline
+      stdout.write(' ');
+    }
+    print('');
+  }
+}
+
+// Pattern-18: Alpha-Triangle Pattern
+
+/*
+
+Examples:
+
+Input Format: N = 3
+Result: 
+C
+B C
+A B C
+
+Input Format: N = 6
+Result:   
+F
+E F
+D E F
+C D E F
+B C D E F
+A B C D E F
+
+
+String.fromCharCode('A'.codeUnitAt(0) + (n - 1 - i + j))
+Row 0: F          (n-1-i+j = 5-0+0 = 5)
+Row 1: E F        (5-1+0=4, 5-1+1=5)
+Row 2: D E F      (5-2+0=3, 5-2+1=4, 5-2+2=5)
+Row 3: C D E F    (5-3+0=2, 5-3+1=3, 5-3+2=4, 5-3+3=5)
+Row 4: B C D E F  (5-4+0=1, 5-4+1=2, 5-4+2=3, 5-4+3=4, 5-4+4=5)
+Row 5: A B C D E F(5-5+0=0, 5-5+1=1, 5-5+2=2, 5-5+3=3, 5-5+4=4, 5-5+5=5)
+
+*/
+
+void printAlphaTrianglePattern(int n) {
+  for (var i = 0; i < n; i++) {
+    // space
+    for (var j = 0; j <= i; j++) {
+      // Calculate character code: start from ('A' + n - 1) and go backwards
+      // alphabets
+      var ch = 'A'.codeUnitAt(0) + (n - 1 - i + j);
+      stdout.write(String.fromCharCode(ch));
+    }
+
+    print('');
+  }
+}
+
+// Pattern-19: Symmetric-Void Pattern
+
+/*
+
+Input Format: N = 3
+Result: 
+******
+**  **
+*    *
+*    *
+**  **
+******
+
+Input Format: N = 6
+Result:   
+************
+*****  *****
+****    ****
+***      ***
+**        **
+*          *
+*          *
+**        **
+***      ***
+****    ****
+*****  *****
+************
+
+*/
+
+/// dive above pattern into 2
+/// part1 - [stars,space,stars]
+/// for n=5 - [5,0,5]
+///           [4,2,4]
+///           [3,4,3]
+///           [2,6,2]
+///           [1,8,1]
+/// stars formula = n-i
+/// space plus 2
+///
+/// part2 - [stars,space,stars]
+/// for n=5 - [1,8,1]
+///           [2,6,2]
+///           [3,4,3]
+///           [4,2,4]
+///           [5,0,5]
+/// stars formula = normal till n
+/// space plus 2n-2
+
+void printSymmetricVoidPattern(int n) {
+  var space = 0;
+  for (var i = 0; i < n; i++) {
+    //stars
+    for (var j = 0; j < n - i; j++) {
+      stdout.write('*');
+    }
+    // space
+    for (var j = 0; j < space; j++) {
+      stdout.write(' ');
+    }
+    //stars
+    for (var j = 0; j < n - i; j++) {
+      stdout.write('*');
+    }
+    space += 2;
+    print('');
+  }
+  // part2
+  space = (2 * n) - 2;
+  for (var i = 0; i < n; i++) {
+    // stars
+    for (var j = 0; j <= i; j++) {
+      stdout.write('*');
+    }
+
+    // spaces
+    for (var j = 0; j < space; j++) {
+      stdout.write(' ');
+    }
+
+    // stars
+    for (var j = 0; j <= i; j++) {
+      stdout.write('*');
+    }
+    space -= 2;
     print('');
   }
 }
