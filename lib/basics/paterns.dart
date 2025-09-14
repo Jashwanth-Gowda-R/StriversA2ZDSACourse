@@ -39,6 +39,12 @@ void main() {
   printAlphaTrianglePattern(6);
   print('-------');
   printSymmetricVoidPattern(6);
+  print('-------');
+  printSymmetricButterflyPattern(6);
+  print('-------');
+  printHollowRectanglePattern(6);
+  print('-------');
+  printNumberPattern(6);
 }
 
 // Pattern-1: Rectangular Star Pattern
@@ -700,6 +706,171 @@ void printSymmetricVoidPattern(int n) {
       stdout.write('*');
     }
     space -= 2;
+    print('');
+  }
+}
+
+// Pattern - 20: Symmetric-Butterfly Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+*    *
+**  **
+******
+**  **
+*    *
+
+
+Input Format: N = 6
+Result:   
+*          *
+**        **
+***      ***
+****    ****
+*****  *****
+************
+*****  *****
+****    ****
+***      ***
+**        **
+*          *
+
+*/
+
+void printSymmetricButterflyPattern(int n) {
+  int spaces = 2 * n - 2;
+
+  // Upper part of the butterfly
+  for (int i = 1; i <= n; i++) {
+    // Left stars
+    for (int j = 1; j <= i; j++) {
+      stdout.write('*');
+    }
+
+    // Spaces
+    for (int j = 1; j <= spaces; j++) {
+      stdout.write(' ');
+    }
+
+    // Right stars
+    for (int j = 1; j <= i; j++) {
+      stdout.write('*');
+    }
+
+    print('');
+    spaces -= 2;
+  }
+
+  // Lower part of the butterfly
+  spaces = 2;
+  for (int i = n - 1; i >= 1; i--) {
+    // Left stars
+    for (int j = 1; j <= i; j++) {
+      stdout.write('*');
+    }
+
+    // Spaces
+    for (int j = 1; j <= spaces; j++) {
+      stdout.write(' ');
+    }
+
+    // Right stars
+    for (int j = 1; j <= i; j++) {
+      stdout.write('*');
+    }
+
+    print('');
+    spaces += 2;
+  }
+}
+
+// Pattern - 21: Hollow Rectangle Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+***
+* *
+***
+
+Input Format: N = 6
+Result:   
+******
+*    *
+*    *
+*    *
+*    *
+******
+
+*/
+
+/// need to print stars at edge of the square (i == 0 || j == 0 || i == n - 1 || j == n - 1)
+void printHollowRectanglePattern(int n) {
+  for (var i = 0; i < n; i++) {
+    for (var j = 0; j < n; j++) {
+      if (i == 0 || j == 0 || i == n - 1 || j == n - 1) {
+        stdout.write('*');
+      } else {
+        stdout.write(' ');
+      }
+    }
+    print('');
+  }
+}
+
+// Pattern - 22: The Number Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+3 3 3 3 3 
+3 2 2 2 3 
+3 2 1 2 3 
+3 2 2 2 3 
+3 3 3 3 3
+
+Input Format: N = 6
+Result:   
+6 6 6 6 6 6 6 6 6 6 6 
+6 5 5 5 5 5 5 5 5 5 6 
+6 5 4 4 4 4 4 4 4 5 6 
+6 5 4 3 3 3 3 3 4 5 6 
+6 5 4 3 2 2 2 3 4 5 6 
+6 5 4 3 2 1 2 3 4 5 6 
+6 5 4 3 2 2 2 3 4 5 6 
+6 5 4 3 3 3 3 3 4 5 6 
+6 5 4 4 4 4 4 4 4 5 6 
+6 5 5 5 5 5 5 5 5 5 6 
+6 6 6 6 6 6 6 6 6 6 6
+
+*/
+
+void printNumberPattern(int n) {
+  int size = 2 * n - 1;
+
+  for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+      // Calculate distances from boundaries
+      int fromTop = i;
+      int fromBottom = (size - 1) - i;
+      int fromLeft = j;
+      int fromRight = (size - 1) - j;
+
+      // Find which boundary is closest
+      int closest = fromTop;
+      if (fromBottom < closest) closest = fromBottom;
+      if (fromLeft < closest) closest = fromLeft;
+      if (fromRight < closest) closest = fromRight;
+
+      stdout.write('${n - closest} ');
+    }
     print('');
   }
 }
