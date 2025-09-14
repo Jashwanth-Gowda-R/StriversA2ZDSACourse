@@ -1,4 +1,4 @@
-// create a sqaure pattern
+// create a sqaure pattern 7338433383-h
 import 'dart:io';
 
 void main() {
@@ -25,6 +25,14 @@ void main() {
   printBinaryNumberTrianglePattern(6);
   print('-------');
   printNumberCrownPattern(6);
+  print('-------');
+  printIncreasingNumberTrianglePattern(6);
+  print('-------');
+  printIncreasingLetterTrianglePattern(6);
+  print('-------');
+  printReverseLetterTrianglePattern(6);
+  print('-------');
+  printAlphaRampPattern(5);
 }
 
 // Pattern-1: Rectangular Star Pattern
@@ -369,5 +377,136 @@ void printNumberCrownPattern(int n) {
     }
     print('');
     space -= 2;
+  }
+}
+
+// Pattern - 13: Increasing Number Triangle Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+1
+2 3
+4 5 6
+
+Input Format: N = 6
+Result:   
+1
+2  3
+4  5  6
+7  8  9  10
+11  12  13  14  15
+16  17  18  19  20  21
+
+*/
+
+void printIncreasingNumberTrianglePattern(int n) {
+  var num = 0;
+  for (var i = 1; i < n; i++) {
+    for (var j = 1; j <= i; j++) {
+      num = num + 1;
+      stdout.write('$num ');
+    }
+    print('');
+  }
+}
+
+// Pattern-14: Increasing Letter Triangle Pattern
+
+/*
+Examples:
+
+Input Format: N = 3
+Result: 
+A
+A B
+A B C
+
+Input Format: N = 6
+Result:   
+A
+A B
+A B C
+A B C D
+A B C D E
+A B C D E F
+
+*/
+
+void printIncreasingLetterTrianglePattern(int n) {
+  for (var i = 0; i < n; i++) {
+    for (var j = 'A'.codeUnitAt(0); j <= 'A'.codeUnitAt(0) + i; j++) {
+      stdout.write('${String.fromCharCode(j)} ');
+    }
+    print('');
+  }
+}
+
+// Pattern-15: Reverse Letter Triangle Pattern
+
+/*
+Here, N = 5.
+
+Examples:
+
+Input Format: N = 3
+Result: 
+A B C
+A B
+A
+
+Input Format: N = 6
+Result:   
+A B C D E F
+A B C D E 
+A B C D
+A B C
+A B
+A
+
+*/
+
+void printReverseLetterTrianglePattern(int n) {
+  for (var i = n; i > 0; i--) {
+    for (var j = 'A'.codeUnitAt(0); j <= 'A'.codeUnitAt(0) + i; j++) {
+      stdout.write('${String.fromCharCode(j)} ');
+    }
+    print('');
+  }
+}
+
+// Pattern - 16: Alpha-Ramp Pattern
+
+/*
+
+Examples:
+
+Input Format: N = 3
+Result: 
+A
+B B
+C C C
+
+Input Format: N = 6
+Result:   
+A 
+B B
+C C C
+D D D D
+E E E E E
+F F F F F F
+
+*/
+
+void printAlphaRampPattern(int n) {
+  for (var i = 0; i < n; i++) {
+    for (var j = 0; j <= i; j++) {
+      // print('$j');
+      var ch = 'A'.codeUnitAt(0) + i;
+      stdout.write('${String.fromCharCode(ch)} ');
+    }
+    print('');
   }
 }
