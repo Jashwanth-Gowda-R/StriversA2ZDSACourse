@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:io';
 
 void main() {
   printAllDigitsOfNumber(10);
@@ -11,6 +11,17 @@ void main() {
   print('-------');
   var armstrongNumber = isArmstrongNumber(153);
   print(armstrongNumber);
+  print('-------');
+  divisorsOfNumber(36);
+  print('-------');
+  var isprime5 = isPrimeNumber(5);
+  print('is 5 prime : $isprime5');
+  var isprime36 = isPrimeNumber(36);
+  print('is 36 prime : $isprime36');
+  print('-------');
+  gcd(9, 8);
+  gcd(10, 52);
+  gcd(50, 5);
 }
 
 // Count all Digits of a Number
@@ -181,4 +192,124 @@ bool isArmstrongNumber(int n) {
   print(sum);
 
   return sum == givenNum;
+}
+
+// Divisors of a Number
+/*
+You are given an integer n. You need to find all the divisors of n. Return all the divisors of n as an array or list in a sorted order.
+
+
+
+A number which completely divides another number is called it's divisor.
+
+Input: n = 6
+
+Output = [1, 2, 3, 6]
+
+Explanation: The divisors of 6 are 1, 2, 3, 6.
+
+Input: n = 8
+
+Output: [1, 2, 4, 8]
+
+Explanation: The divisors of 8 are 1, 2, 4, 8.
+*/
+
+void divisorsOfNumber(int n) {
+  for (var i = 1; i <= n; i++) {
+    if (n % i == 0) {
+      stdout.write('$i ');
+    }
+  }
+  print(' ');
+}
+
+// Check for Prime Number
+
+/*
+You are given an integer n. You need to check if the number is prime or not. Return true if it is a prime number, otherwise return false.
+
+
+
+A prime number is a number which has no divisors except 1 and itself.
+
+
+Examples:
+Input: n = 5
+
+Output: true
+
+Explanation: The only divisors of 5 are 1 and 5 , So the number 5 is prime.
+
+Input: n = 8
+
+Output: false
+
+Explanation: The divisors of 8 are 1, 2, 4, 8, thus it is not a prime number.
+
+*/
+
+// prime no will have only 2 factors not more than that
+
+// sqrt method
+bool isPrimeNumber(int n) {
+  if (n <= 1) return false;
+  if (n == 2) return true;
+  if (n % 2 == 0) return false;
+
+  var factorCount = 0;
+  for (var i = 1; i * i <= n; i++) {
+    if (n % i == 0) {
+      factorCount++;
+      if (i != n / i) {
+        factorCount++;
+      }
+    }
+    // Early exit - if we already have more than 2 factors, it's not prime
+    if (factorCount > 2) return false;
+  }
+  return factorCount == 2;
+}
+
+// GCD of Two Numbers
+/*
+You are given two integers n1 and n2. You need find the Greatest Common Divisor (GCD) of the two given numbers. Return the GCD of the two numbers.
+
+
+
+The Greatest Common Divisor (GCD) of two integers is the largest positive integer that divides both of the integers.
+
+
+Examples:
+Input: n1 = 4, n2 = 6
+
+Output: 2
+
+Explanation: Divisors of n1 = 1, 2, 4, Divisors of n2 = 1, 2, 3, 6
+
+Greatest Common divisor = 2.
+
+Input: n1 = 9, n2 = 8
+
+Output: 1
+
+Explanation: Divisors of n1 = 1, 3, 9 Divisors of n2 = 1, 2, 4, 8.
+
+Greatest Common divisor = 1.
+
+*/
+
+void gcd(int n1, int n2) {
+  while (n1 != 0 && n2 != 0) {
+    if (n1 > n2) {
+      n1 = n1 % n2;
+    } else {
+      n2 = n2 % n1;
+    }
+  }
+  if (n1 == 0) {
+    print(n2);
+  } else {
+    print(n1);
+  }
 }
