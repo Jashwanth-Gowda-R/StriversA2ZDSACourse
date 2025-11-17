@@ -82,7 +82,7 @@ Explanation: 1 <= 1 <= 4 <= 4 <= 5.
 Thus the array is sorted in non-decreasing order.
 */
 // in this sorting technique push the max value to last and do adjacent swap
-// wrost case tiem complexity is o(n^2)
+// wrost case time complexity is o(n^2)
 // best case for sorted array time complexity is o(n)
 
 List<int> bubbleSort(List<int> nums) {
@@ -135,7 +135,7 @@ Thus the array is sorted in non-decreasing order.
 */
 
 // takes an element and place it in its correct value
-// wrost case tiem complexity is o(n^2)
+// wrost case time complexity is o(n^2)
 // best case for sorted array time complexity is o(n)
 
 List<int> insertionSort(List<int> nums) {
