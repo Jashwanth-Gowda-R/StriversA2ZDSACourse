@@ -1,6 +1,15 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 void main() {
   var removeDuplicatesvar = removeDuplicates([-30, -30, 0, 0, 10, 20, 30, 30]);
   print(removeDuplicatesvar);
+  var missingNumbervar = missingNumber([0, 1, 2, 4, 5, 6]);
+  print(missingNumbervar);
+  var unionArrayvar = unionArray([3, 4, 6, 7, 9, 9], [1, 5, 7, 8, 8]);
+  print(unionArrayvar);
+  var intersectionArrayvar =
+      intersectionArray([-17, -1, -1, 3], [-17, 0, 3, 3]);
+  print(intersectionArrayvar);
 }
 // Move Zeros to End - [0, 1, 4, 0, 5, 2]
 /*
@@ -78,4 +87,111 @@ removeDuplicates(List<int> nums) {
   var uniqueLists = hashMap.keys.toList();
   k = uniqueLists.length;
   return k;
+}
+
+// Find missing number
+
+missingNumber(nums) {
+  // // o(n^2)
+  // var hashmap = {};
+
+  // for (var i = 0; i < nums.length - 1; i++) {
+  //   hashmap[nums[i]] = 1;
+  // }
+  // print(hashmap);
+
+  // for (var i = 0; i <= nums.length - 1; i++) {
+  //   if (!hashmap.containsKey(i)) {
+  //     return i;
+  //   }
+  // }
+
+  // return -1;
+
+  // o(n)
+  int n = nums.length;
+
+  double sum = (n * (n + 1)) / 2;
+  double sum2 = 0;
+
+  for (int i = 0; i < n; i++) {
+    sum2 += nums[i] as int;
+  }
+  return sum - sum2;
+}
+
+// Union of two sorted arrays
+/*
+Given two sorted arrays nums1 and nums2, return an array that contains the union of these two arrays. The elements in the union must be in ascending order.
+
+
+
+The union of two arrays is an array where all values are distinct and are present in either the first array, the second array, or both.
+*/
+unionArray(nums1, nums2) {
+  var hashMap = {};
+
+  for (var i = 0; i <= nums1.length - 1; i++) {
+    hashMap[nums1[i]] = i;
+  }
+
+  for (var i = 0; i <= nums2.length - 1; i++) {
+    hashMap[nums2[i]] = i;
+  }
+
+  print(hashMap);
+
+  var res = hashMap.keys.toList();
+  res.sort();
+  return res;
+}
+
+// Intersection of two sorted arrays
+/*
+Given two sorted arrays, nums1 and nums2, return an array containing the intersection of these two arrays. Each element in the result must appear as many times as it appears in both arrays.
+
+
+The intersection of two arrays is an array where all values are present in both arrays.
+*/
+
+List<int> intersectionArray(List<int> nums1, List<int> nums2) {
+  // for sorted array fine
+  // List<int> res = [];
+  // nums1.sort();
+  // nums2.sort();
+
+  // var i = 0, j = 0;
+  // while (i < nums1.length && j < nums2.length) {
+  //   if (nums1[i] == nums2[j]) {
+  //     res.add(nums1[i]);
+  //     i++;
+  //     j++;
+  //   } else if (nums1[i] < nums2[j]) {
+  //     i++;
+  //   } else {
+  //     j++;
+  //   }
+  // }
+
+  // return res;
+
+  // unsorted array
+  List<int> res = [];
+  var frequencyMap = {};
+  for (var i = 0; i < nums1.length; i++) {
+    if (!frequencyMap.containsKey(nums1[i])) {
+      frequencyMap[nums1[i]] = 1;
+    } else {
+      frequencyMap[nums1[i]]++;
+    }
+  }
+
+  for (var i = 0; i < nums2.length; i++) {
+    if (frequencyMap.containsKey(nums2[i]) && frequencyMap[nums2[i]] > 0) {
+      res.add(nums2[i]);
+      frequencyMap[nums2[i]]--;
+    }
+  }
+
+  return res;
 }
