@@ -10,6 +10,9 @@ void main() {
     [13, 3, 6, 7],
     [15, 14, 12, 16]
   ]);
+
+  var sum2 = twoSum([2, 7, 11, 15], 9);
+  print(sum2);
 }
 
 // Rotate matrix by 90 degrees
@@ -42,4 +45,36 @@ void rotate(List<List<int>> matrix) {
   }
 
   print(matrix);
+}
+
+// Two Sum
+/*
+Given an array of integers nums and an integer target. Return the indices(0 - indexed) of two elements in nums such that they add up to target.
+
+Each input will have exactly one solution, and the same element cannot be used twice. Return the answer in increasing order.
+
+Examples:
+Input: nums = [1, 6, 2, 10, 3], target = 7
+
+Output: [0, 1]
+
+Explanation:
+
+nums[0] + nums[1] = 1 + 6 = 7
+*/
+
+List<int> twoSum(List<int> nums, int target) {
+  var hashMap = {};
+
+  for (var i = 0; i < nums.length; i++) {
+    var valRequired = target - nums[i];
+    print(valRequired);
+    print(hashMap);
+    if (hashMap.containsKey(valRequired)) {
+      return [i, hashMap[valRequired]];
+    } else {
+      hashMap[nums[i]] = i;
+    }
+  }
+  return [-1, -1];
 }
