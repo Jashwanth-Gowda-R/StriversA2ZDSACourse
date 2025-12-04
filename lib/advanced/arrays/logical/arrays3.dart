@@ -19,6 +19,12 @@ void main() {
 
   var fourSumvar = fourSum([0, 0, 0, 0, 0, 0], 0);
   print(fourSumvar);
+
+  var sortColorsVar = sortColors([2, 0, 1]);
+  print(sortColorsVar);
+
+  var maxSubArrayVar = maxSubArray([-1, 2, 3, -1, 2, -6, 5]);
+  print(maxSubArrayVar);
 }
 
 // Rotate matrix by 90 degrees
@@ -221,4 +227,100 @@ List<List<int>> fourSum(List<int> nums, int target) {
   }
 
   return res;
+}
+
+// Sort an array of 0's 1's and 2's - Sort Colors
+/*
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+The optimal solution is a variation of the popular Dutch National flag algorithm.
+
+This algorithm contains 3 pointers i.e. low, mid, and high, and 3 main rules.
+
+Index 0 to low -1 contains 0
+Index low to mid - 1 contains 1
+Index high +1 to sizeOfArray - 1 contains 2.
+
+The middle part i.e. mid to high is the unsorted segment. So, this part is a mix of 0's, 1's and 2's. Follow the rules mentioned in approach and image below and sort the array.
+*/
+
+List<int> sortColors(List<int> nums) {
+  // 3 pointer solution - Dutch National flag algorithm.
+  var low = 0;
+  var mid = 0;
+  var high = nums.length - 1;
+
+  while (mid <= high) {
+    if (nums[mid] == 0) {
+      // swap
+      // low and mid
+      var temp = nums[mid];
+      nums[mid] = nums[low];
+      nums[low] = temp;
+      low++;
+      mid++;
+    } else if (nums[mid] == 1) {
+      mid++;
+    } else {
+      // swap
+      // high and mid
+      var temp = nums[mid];
+      nums[mid] = nums[high];
+      nums[high] = temp;
+      high--;
+    }
+  }
+  return nums;
+}
+
+// Kadane's Algorithm -  Maximum Subarray
+/*
+Given an integer array nums, find the subarray with the largest sum and return the sum of the elements present in that subarray.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+*/
+int maxSubArray(List<int> nums) {
+  int max = -double.maxFinite.toInt();
+
+  int sum = 0;
+
+  int start = 0;
+
+  int subStart = -1;
+  int subEnd = -1;
+
+  for (var i = 0; i < nums.length; i++) {
+    if (sum == 0) {
+      start = i;
+    }
+
+    sum += nums[i];
+
+    if (sum > max) {
+      max = sum;
+      subStart = start;
+      subEnd = i;
+    }
+
+    if (sum < 0) {
+      sum = 0;
+    }
+  }
+  var subArray = [];
+  // to print sub array
+  for (var i = subStart; i <= subEnd; i++) {
+    subArray.add(nums[i]);
+  }
+  print(subArray);
+
+  return max;
 }
