@@ -25,6 +25,15 @@ void main() {
 
   var maxSubArrayVar = maxSubArray([-1, 2, 3, -1, 2, -6, 5]);
   print(maxSubArrayVar);
+
+  nextPermutation([1, 2, 3]);
+
+  var majorityElementVar = majorityElement([1, 2]);
+  print(majorityElementVar);
+
+  var findMissingRepeatingNumbersVar =
+      findMissingRepeatingNumbers([3, 5, 4, 1, 1]);
+  print(findMissingRepeatingNumbersVar);
 }
 
 // Rotate matrix by 90 degrees
@@ -323,4 +332,201 @@ int maxSubArray(List<int> nums) {
   print(subArray);
 
   return max;
+}
+
+// Next Permutation
+/*
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr:
+
+[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].
+
+The next permutation of an array of integers is the next lexicographically greater permutation of its integers.
+
+More formally, if all the permutations of the array are sorted in lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted order.
+
+If such arrangement is not possible (i.e., the array is the last permutation), then rearrange it to the lowest possible order (i.e., sorted in ascending order).
+
+You must rearrange the numbers in-place and use only constant extra memory.
+
+Examples:
+Input: nums = [1,2,3]
+
+Output: [1,3,2]
+
+Explanation:
+
+The next permutation of [1,2,3] is [1,3,2].
+
+
+Algorithm Steps - 
+Find the first decreasing element from the right
+
+  Start from the last element, move leftwards
+
+  Find the first index i where nums[i] < nums[i+1]
+
+  This is the "pivot" element
+
+Find the element just larger than the pivot from the right
+
+  If we found a pivot (i >= 0)
+
+  Find the first element from the right that is greater than nums[i]
+
+  Swap these two elements
+
+Reverse the suffix (elements after the pivot)
+
+  Reverse all elements from i+1 to the end
+
+  This gives us the smallest possible arrangement for the suffix
+
+*/
+
+void nextPermutation(List<int> nums) {
+  var n = nums.length;
+
+  // step 1 - Find the first decreasing element from the right
+  var i = n - 2;
+  while (i >= 0 && nums[i] >= nums[i + 1]) {
+    i--;
+  }
+
+// If we found a pivot
+  if (i >= 0) {
+    // Step 2: Find element just larger than nums[i] from the right
+    var j = n - 1;
+    while (j >= 0 && nums[j] <= nums[i]) {
+      j--;
+    }
+    // Step 3: Swap nums[i] and nums[j]
+    swap(nums, i, j);
+  }
+  // Step 4: Reverse the suffix (from i+1 to end)
+  reverse(nums, i + 1, n - 1);
+  print(nums);
+}
+
+// Helper function to swap two elements
+void swap(List<int> nums, int i, int j) {
+  var temp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = temp;
+}
+
+// Helper function to reverse a portion of the array
+void reverse(List<int> nums, int start, int end) {
+  while (start < end) {
+    swap(nums, start, end);
+    start++;
+    end--;
+  }
+}
+
+// Majority Element-II
+/*
+Given an integer array nums of size n. Return all elements which appear more than n/3 times in the array. The output can be returned in any order.
+
+Examples:
+Input: nums = [1, 2, 1, 1, 3, 2]
+
+Output: [1]
+
+Explanation:
+
+Here, n / 3 = 6 / 3 = 2.
+
+Therefore the elements appearing 3 or more times is : [1]
+*/
+List<int> majorityElement(List<int> nums) {
+  var hashMap = {};
+  for (var i = 0; i <= nums.length - 1; i++) {
+    print(hashMap);
+    if (!hashMap.containsKey(nums[i])) {
+      hashMap[nums[i]] = 1;
+    } else {
+      hashMap[nums[i]] = hashMap[nums[i]] + 1;
+    }
+  }
+
+  print(hashMap);
+  var n = nums.length;
+  var minAppearance = (n ~/ 3) + 1;
+  print(minAppearance);
+
+  // var maxkey = 0;
+  // var maxValue = 0;
+  List<int> res = [];
+
+  for (var element in hashMap.entries) {
+    if (element.value >= minAppearance) {
+      // maxkey = element.key;
+      res.add(element.key);
+      // maxValue = element.value;
+    }
+  }
+
+  return res;
+}
+
+// Find the repeating and missing number
+/*
+ * Given an integer array nums of size n containing values from [1, n] and each value appears exactly once in the array, except for A, which appears twice and B which is missing.
+
+Return the values A and B, as an array of size 2, where A appears in the 0-th index and B in the 1st index.
+
+Note: You are not allowed to modify the original array.
+
+Examples:
+Input: nums = [3, 5, 4, 1, 1]
+
+Output: [1, 2]
+
+Explanation:
+
+1 appears two times in the array and 2 is missing from nums
+ */
+
+List<int> findMissingRepeatingNumbers(List<int> nums) {
+  List<int> res = [];
+
+  // will create hashmap
+  var hashMap = {};
+
+  for (var i = 0; i < nums.length; i++) {
+    if (!hashMap.containsKey(nums[i])) {
+      hashMap[nums[i]] = 1;
+    } else {
+      hashMap[nums[i]]++;
+    }
+  }
+  print(hashMap);
+
+  for (var element in hashMap.entries) {
+    if (element.value >= 2) {
+      // maxkey = element.key;
+      res.add(element.key);
+      // maxValue = element.value;
+    }
+  }
+  print(res);
+
+  // find missing number
+  int n = nums.length;
+  var setList = nums.toSet().toList();
+
+  double sum = (n * (n + 1)) / 2;
+  double sum2 = 0;
+
+  for (int i = 0; i < setList.length; i++) {
+    sum2 += setList[i];
+  }
+  print(sum);
+  print(sum2);
+  var missingNumber = sum - sum2;
+  res.add(missingNumber.toInt());
+
+  return res;
 }
