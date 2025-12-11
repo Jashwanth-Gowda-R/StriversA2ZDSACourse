@@ -37,6 +37,9 @@ void main() {
 
   var numberOfInversionsVar = numberOfInversions([2, 3, 7, 1, 3, 5]);
   print(numberOfInversionsVar);
+
+  var reversePairsVar = reversePairs([6, 4, 4, 2, 2]);
+  print(reversePairsVar);
 }
 
 // Rotate matrix by 90 degrees
@@ -625,4 +628,108 @@ int merge(List<int> nums, int low, int mid, int high) {
 
 int numberOfInversions(List<int> nums) {
   return mergeSort(nums, 0, nums.length - 1);
+}
+
+// Reverse Pairs
+/*
+Given an integer array nums. Return the number of reverse pairs in the array.
+
+
+
+An index pair (i, j) is called a reverse pair if:
+
+
+
+0 <= i < j < nums.length
+
+
+nums[i] > 2 * nums[j]
+
+Examples:
+Input: nums = [6, 4, 1, 2, 7]
+
+Output: 3
+
+Explanation:
+
+The reverse pairs are:
+
+(0, 2) : nums[0] = 6, nums[2] = 1, 6 > 2 * 1
+
+(0, 3) : nums[0] = 6, nums[3] = 2, 6 > 2 * 2
+
+(1, 2) : nums[1] = 4, nums[2] = 1, 4 > 2 * 1
+*/
+
+// solve using merge sort
+
+int reversePairs(List<int> nums) {
+  return mergeSortReversePairs(nums, 0, nums.length - 1);
+}
+
+int mergeSortReversePairs(List<int> nums, int low, int high) {
+  int count = 0;
+  // base condition
+  if (low >= high) {
+    // return nums;
+    return count;
+  }
+  var mid = (high + low) ~/ 2;
+  // divide
+  count += mergeSortReversePairs(nums, low, mid);
+  count += mergeSortReversePairs(nums, mid + 1, high);
+  // count calculation
+  count += countPairs(nums, low, mid, high);
+  // merge
+  mergeReversePairs(nums, low, mid, high);
+  return count;
+}
+
+// Count reverse pairs
+int countPairs(List<int> nums, int low, int mid, int high) {
+  int cnt = 0;
+  int right = mid + 1;
+
+  for (int i = low; i <= mid; i++) {
+    while (right <= high && nums[i] > 2 * nums[right]) {
+      right++;
+    }
+    cnt += right - (mid + 1);
+  }
+
+  return cnt;
+}
+
+List<int> mergeReversePairs(List<int> nums, int low, int mid, int high) {
+  var left = low;
+  var right = mid + 1;
+  List<int> arr = [];
+
+  while (left <= mid && right <= high) {
+    if (nums[left] <= nums[right]) {
+      arr.add(nums[left]);
+      left++;
+    } else {
+      arr.add(nums[right]);
+      right++;
+    }
+  }
+
+  while (left <= mid) {
+    arr.add(nums[left]);
+    left++;
+  }
+
+  while (right <= high) {
+    arr.add(nums[right]);
+    right++;
+  }
+
+  for (var i = 0; i < arr.length; i++) {
+    nums[low + i] = arr[i];
+  }
+  // print(nums);
+
+  // print(arr);
+  return nums;
 }
