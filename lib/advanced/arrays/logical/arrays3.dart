@@ -1,3 +1,5 @@
+import 'dart:math';
+
 void main() {
   // rotate([
   //   [1, 2, 3],
@@ -40,6 +42,9 @@ void main() {
 
   var reversePairsVar = reversePairs([6, 4, 4, 2, 2]);
   print(reversePairsVar);
+
+  var maxProductVar = maxProduct([4, 5, 3, 7, 1, 2]);
+  print(maxProductVar);
 }
 
 // Rotate matrix by 90 degrees
@@ -732,4 +737,53 @@ List<int> mergeReversePairs(List<int> nums, int low, int mid, int high) {
 
   // print(arr);
   return nums;
+}
+
+// Maximum Product Subarray in an Array
+/*
+Given an integer array nums. Find the subarray with the largest product, and return the product of the elements present in that subarray.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+Example 1
+
+Input: nums = [4, 5, 3, 7, 1, 2]
+
+Output: 840
+
+Explanation:
+
+The largest product is given by the whole array itself
+
+Example 2
+
+Input: nums = [-5, 0, -2]
+
+Output: 0
+
+Explanation:
+
+The largest product is achieved with the following subarrays [0], [-5, 0], [0, -2], [-5, 0, -2].
+
+*/
+
+int maxProduct(List<int> nums) {
+  int productAnswer = nums[0];
+  int prefix = 1;
+  int sufix = 1;
+
+  for (var i = 0; i < nums.length; i++) {
+    if (prefix == 0) {
+      prefix = 1;
+    }
+    if (sufix == 0) {
+      sufix = 1;
+    }
+    prefix *= nums[i];
+    sufix *= nums[nums.length - 1 - i];
+
+    productAnswer = max(productAnswer, max(prefix, sufix));
+  }
+
+  return productAnswer;
 }
