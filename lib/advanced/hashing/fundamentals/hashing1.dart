@@ -5,6 +5,10 @@ void main() {
   var secondHighestOccurringElementvar =
       secondMostFrequentElement([4, 4, 5, 5, 6, 6, 7]);
   print(secondHighestOccurringElementvar);
+
+  var sumOfHighestAndLowestFrequencyvar =
+      sumHighestAndLowestFrequency([1, 2, 2, 3, 3, 3]);
+  print(sumOfHighestAndLowestFrequencyvar);
 }
 
 //Highest Occurring Element in an Array
@@ -113,4 +117,50 @@ int secondMostFrequentElement(List<int> nums) {
 
   // The second most frequent element is at index 1
   return sortedEntries[1].key;
+}
+
+// Sum of Highest and Lowest Frequency
+/*
+Given an array of n integers, 
+find the sum of the frequencies of the highest occurring number and lowest occurring number.
+
+Example 1
+
+Input: arr = [1, 2, 2, 3, 3, 3]
+
+Output: 4
+
+Explanation: The highest frequency is 3 (element 3), and the lowest frequency is 1 (element 1). 
+Their sum is 3 + 1 = 4.
+
+Example 2
+
+Input: arr = [4, 4, 5, 5, 6]
+
+Output: 3
+
+Explanation: The highest frequency is 2 (elements 4 and 5), and the lowest frequency is 1 (element 6). 
+Their sum is 2 + 1 = 3.
+*/
+
+int sumHighestAndLowestFrequency(nums) {
+  Map hashMap = {};
+  int max = 0;
+  int min = double.maxFinite.toInt();
+
+  for (var num in nums) {
+    hashMap[num] = (hashMap[num] ?? 0) + 1;
+  }
+  print(hashMap);
+
+  for (var val in hashMap.values) {
+    if (val > max) {
+      max = val;
+    }
+    if (val < min) {
+      min = val;
+    }
+  }
+
+  return max + min;
 }
