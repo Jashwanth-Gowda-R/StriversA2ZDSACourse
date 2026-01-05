@@ -322,6 +322,21 @@ To find the GCD of n1 and n2 where n1 > n2:
 Repeatedly subtract the smaller number from the larger number until one of them becomes 0.
 Once one of them becomes 0, the other number is the GCD of the original numbers.
 
+Example: GCD of n1 = 7, n2 = 2 can be found in this way:
+gcd(7, 2) = gcd(7-2, 2) = gcd(5, 2)
+gcd(5, 2) = gcd(5-2, 2) = gcd(3, 2)
+gcd(3, 2) = gcd(3-2, 2) = gcd(1, 2)
+gcd(2, 1) = gcd(2-1, 1) = gcd(1, 1)
+gcd(1, 1) = gcd(1-1, 1) = gcd(0, 1)
+Hence GCD of n1 = 7, n2 = 2 is 1.
+Note:
+Observe that instead of subtracting the smaller number from the greater number repeatedly, the modulus operator can be used.
+gcd(7, 2) = gcd(7%2, 2) = gcd(1, 2)
+Approach:
+Initialize a while loop till both numbers are greater than zero.
+In each iteration perform the modulus operation of the greater number with the smaller number.
+Once the loop terminates, one of the two variables stores a non-zero value which is the GCD for the given pair of numbers.
+
 */
 
 void gcd(int n1, int n2) {
