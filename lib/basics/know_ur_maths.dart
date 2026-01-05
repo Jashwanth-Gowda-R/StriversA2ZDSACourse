@@ -14,9 +14,9 @@ void main() {
   print('-------');
   divisorsOfNumber(36);
   print('-------');
-  var isprime5 = isPrimeNumber(5);
+  var isprime5 = isPrime(5);
   print('is 5 prime : $isprime5');
-  var isprime36 = isPrimeNumber(36);
+  var isprime36 = isPrime(36);
   print('is 36 prime : $isprime36');
   print('-------');
   gcd(9, 8);
@@ -251,31 +251,49 @@ Explanation: The divisors of 8 are 1, 2, 4, 8, thus it is not a prime number.
 
 // prime no will have only 2 factors not more than that
 
-// sqrt method
-bool isPrimeNumber(int n) {
-  if (n <= 1) return false;
-  if (n == 2) return true;
-  if (n % 2 == 0) return false;
+/* Function to find whether the
+    number is prime or not */
 
-  var factorCount = 0;
-  for (var i = 1; i * i <= n; i++) {
+// sqrt method
+isPrime(n) {
+  // Edge case
+  if (n < 2) return false;
+
+  // Loop from 2 to √n
+  for (var i = 2; i * i <= n; ++i) {
+    // Check if i is a divisor
     if (n % i == 0) {
-      factorCount++;
-      if (i != n / i) {
-        factorCount++;
-      }
+      return false;
     }
-    // Early exit - if we already have more than 2 factors, it's not prime
-    if (factorCount > 2) return false;
   }
-  return factorCount == 2;
+
+  // Return true as the number is prime
+  return true;
 }
+
+// // sqrt method
+// bool isPrimeNumber(int n) {
+//   if (n <= 1) return false;
+//   if (n == 2) return true;
+//   if (n % 2 == 0) return false;
+
+//   var factorCount = 0;
+//   for (var i = 1; i * i <= n; i++) {
+//     if (n % i == 0) {
+//       factorCount++;
+//       if (i != n / i) {
+//         factorCount++;
+//       }
+//     }
+//     // Early exit - if we already have more than 2 factors, it's not prime
+//     if (factorCount > 2) return false;
+//   }
+//   return factorCount == 2;
+// }
 
 // GCD of Two Numbers
 /*
 You are given two integers n1 and n2. You need find the Greatest Common Divisor (GCD) of the two given numbers. Return the GCD of the two numbers.
-
-
 
 The Greatest Common Divisor (GCD) of two integers is the largest positive integer that divides both of the integers.
 
@@ -296,6 +314,13 @@ Output: 1
 Explanation: Divisors of n1 = 1, 3, 9 Divisors of n2 = 1, 2, 4, 8.
 
 Greatest Common divisor = 1.
+
+The most optimal way to solve this problem is to use the Euclidean Algorithm which works on the principle that the GCD of two numbers remains the same even if the smaller number is subtracted from the larger number.
+
+Euclidean Algorithm:
+To find the GCD of n1 and n2 where n1 > n2:
+Repeatedly subtract the smaller number from the larger number until one of them becomes 0.
+Once one of them becomes 0, the other number is the GCD of the original numbers.
 
 */
 
