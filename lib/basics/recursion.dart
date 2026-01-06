@@ -200,10 +200,13 @@ List<int> reverseArray(List<int> arr, int n, int i, int j) {
   // var i = 0;
   // var j = n - 1;
   if (i > j / 2) return arr;
-  var resi = arr[i];
-  var resj = arr[j];
-  arr[i] = resj;
-  arr[j] = resi;
+  // var resi = arr[i];
+  // var resj = arr[j];
+  var temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+  // arr[i] = resj;
+  // arr[j] = resi;
   return reverseArray(arr, n, i + 1, j - 1);
 }
 
@@ -228,7 +231,6 @@ Input : s = "aabbaaa"
 Output : false
 
 Explanation : The string when reversed is --> "aaabbaa", which is not same as original string, So we return false.
-
 
 */
 
