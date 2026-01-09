@@ -44,25 +44,42 @@ The longest sequence of consecutive elements in the array is [0, 1, 2, 3, 4, 5, 
 */
 
 int longestConsecutive(List<int> nums) {
+  // Handle empty array case
   if (nums.isEmpty) return 0;
 
-  int longest = 1;
-  int lastSmaller = nums[0];
+  // Step 1: Sort the array - O(n log n)
+  // This brings consecutive numbers next to each other
   nums.sort();
-  int counter = 1;
 
-  for (var i = 0; i < nums.length; i++) {
-    if (nums[i] - 1 == lastSmaller) {
-      counter++;
-      lastSmaller = nums[i];
-    } else if (nums[i] != lastSmaller) {
-      counter = 1;
-      lastSmaller = nums[i];
+  // Step 2: Initialize variables
+  int maxLength = 1; // Longest sequence length found
+  int currentLength = 1; // Length of current consecutive sequence
+  int prevNumber = nums[0]; // Previous number in current sequence
+
+  // Step 3: Iterate through sorted array starting from second element
+  for (int i = 1; i < nums.length; i++) {
+    int currentNumber = nums[i];
+
+    // Case 1: Current number is consecutive to previous number
+    // Example: prev=2, current=3 → 3-1=2, they are consecutive
+    if (currentNumber - 1 == prevNumber) {
+      currentLength++; // Extend current sequence
+      prevNumber = currentNumber; // Update previous number
     }
-    longest = math.max(longest, counter);
+    // Case 2: Current number is not a duplicate and not consecutive
+    // Example: prev=3, current=5 → start new sequence at 5
+    else if (currentNumber != prevNumber) {
+      currentLength = 1; // Reset sequence length
+      prevNumber = currentNumber; // Start new sequence
+    }
+    // Case 3: Current number is a duplicate (currentNumber == prevNumber)
+    // Do nothing - skip duplicates without breaking sequence
+
+    // Update maximum length found
+    maxLength = math.max(maxLength, currentLength);
   }
 
-  return longest;
+  return maxLength;
 }
 
 // Longest subarray with sum K
@@ -117,6 +134,55 @@ int longestSubarray(List<int> nums, int k) {
   return maxLen;
 }
 
+// added code for comments and understanding
+int longestSubarrayComments(List<int> nums, int k) {
+  // Track maximum length of subarray with sum k
+  int maxLength = 0;
+
+  // Track cumulative sum from start to current index
+  int sum = 0;
+
+  // HashMap to store: sum → firstIndexWhereThisSumOccurred
+  // Key insight: if sum[j] - sum[i] = k, then
+  // subarray from i+1 to j has sum = k
+  Map<int, int> sumIndices = {};
+
+  for (int currentIndex = 0; currentIndex < nums.length; currentIndex++) {
+    // Update cumulative sum including current element
+    sum += nums[currentIndex];
+
+    // SCENARIO 1: Subarray starting from index 0
+    // If prefix sum from index 0 to currentIndex equals k,
+    // then entire subarray [0..currentIndex] has sum k
+    if (sum == k) {
+      // Length = currentIndex + 1 (since array is 0-indexed)
+      maxLength = math.max(maxLength, currentIndex + 1);
+    }
+
+    // SCENARIO 2: Subarray starting somewhere in the middle
+    // We want: sum[currentIndex] - sum[someEarlierIndex] = k
+    // Rearranged: sum[someEarlierIndex] = sum[currentIndex] - k
+    int neededEarliersum = sum - k;
+
+    // Check if we've seen this needed prefix sum before
+    if (sumIndices.containsKey(neededEarliersum)) {
+      // Calculate subarray length:
+      // subarray starts at (earlierIndex + 1) and ends at currentIndex
+      int earlierIndex = sumIndices[neededEarliersum]!;
+      int subarrayLength = currentIndex - earlierIndex;
+      maxLength = math.max(maxLength, subarrayLength);
+    }
+
+    // Store current prefix sum in map, but only if it's new
+    // We want the earliest occurrence to maximize subarray length
+    if (!sumIndices.containsKey(sum)) {
+      sumIndices[sum] = currentIndex;
+    }
+  }
+
+  return maxLength;
+}
+
 // Count subarrays with given sum
 /*
 Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
@@ -158,19 +224,26 @@ int subarraySum(List<int> nums, int k) {
 // O(n)
 int subarraySumOptimal(List<int> nums, int k) {
   int count = 0;
-  int prefixSum = 0;
-  Map<int, int> prefixSumCount = {0: 1}; // prefix sum 0 occurs once
+  int sum = 0;
+  // This represents an "empty subarray" with sum 0
+// It's needed because:
+// 1. A subarray starting at index 0 has no "earlier prefix sum"
+// 2. When sum itself equals k, we need to count it
+// Example: nums=[2], k=2
+// sum = 2, sum - k = 0 → found in map {0:1}
+// So we count the subarray [2]
+  Map<int, int> sumCount = {0: 1}; // prefix sum 0 occurs once
 
   for (int num in nums) {
-    prefixSum += num;
+    sum += num;
 
-    // If (prefixSum - k) exists in map, we found subarrays
-    if (prefixSumCount.containsKey(prefixSum - k)) {
-      count += prefixSumCount[prefixSum - k]!;
+    // If (sum - k) exists in map, we found subarrays
+    if (sumCount.containsKey(sum - k)) {
+      count += sumCount[sum - k]!;
     }
 
     // Update the count of current prefix sum
-    prefixSumCount[prefixSum] = (prefixSumCount[prefixSum] ?? 0) + 1;
+    sumCount[sum] = (sumCount[sum] ?? 0) + 1;
   }
 
   return count;

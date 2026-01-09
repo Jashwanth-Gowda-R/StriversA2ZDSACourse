@@ -116,7 +116,10 @@ int secondMostFrequentElement(List<int> nums) {
   }
 
   // The second most frequent element is at index 1
-  return sortedEntries[1].key;
+  // When all have same frequency, return second smallest
+  // But based on the problem statement: "If second most frequent element does not exist return -1",
+  // we should return -1 when all frequencies are equal.
+  return -1;
 }
 
 // Sum of Highest and Lowest Frequency
