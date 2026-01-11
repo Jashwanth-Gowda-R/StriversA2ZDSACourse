@@ -121,7 +121,8 @@ List<int> rotateArrayByOne(List<int> nums) {
 
 // Left Rotate Array by K Places
 /*
-Given an integer array nums and a non-negative integer k, rotate the array to the left by k steps.
+Given an integer array nums and a non-negative integer k, 
+rotate the array to the left by k steps.
 */
 
 // 1 - reduce k by length of arr size
@@ -146,6 +147,58 @@ List<int> rotateArray(List<int> nums, int k) {
 
   // nums.addAll(temp);
   for (var i = n - k; i < n; i++) {
+    nums[i] = temp[i - (n - k)];
+  }
+
+  return nums;
+}
+/*
+Visual Example:
+Example: nums = [1, 2, 3, 4, 5, 6, 7], k = 3
+Original: [1, 2, 3, 4, 5, 6, 7]
+
+Step 1: k = 3 % 7 = 3
+Step 2: temp = [1, 2, 3] (first 3 elements)
+Step 3: Shift elements from index 3-6 to left:
+        nums[0] = nums[3] = 4
+        nums[1] = nums[4] = 5  
+        nums[2] = nums[5] = 6
+        nums[3] = nums[6] = 7
+        Array becomes: [4, 5, 6, 7, 5, 6, 7]
+Step 4: Place temp at end:
+        nums[4] = temp[0] = 1
+        nums[5] = temp[1] = 2
+        nums[6] = temp[2] = 3
+        Final: [4, 5, 6, 7, 1, 2, 3] ✓
+
+*/
+
+List<int> rotateArrayWithComments(List<int> nums, int k) {
+  var n = nums.length;
+
+  // STEP 1: Handle k larger than array size
+  // Example: If array size is 5 and k=7, rotating by 7 is same as rotating by 2
+  k = k % n;
+
+  // STEP 2: Store first k elements in temp array
+  // These will be moved to the end after rotation
+  List<int> temp = [];
+  for (var i = 0; i < k; i++) {
+    temp.add(nums[i]); // Save elements that will be overwritten
+  }
+
+  // STEP 3: Shift remaining elements to the left
+  // Move elements from index k to n-1 to positions 0 to n-k-1
+  for (var i = k; i < n; i++) {
+    nums[i - k] = nums[i]; // Shift element left by k positions
+  }
+
+  // STEP 4: Place temp elements at the end
+  // Copy saved elements from temp to the end of array
+  for (var i = n - k; i < n; i++) {
+    // Calculate index in temp: i - (n - k)
+    // When i = n-k, temp index = 0
+    // When i = n-1, temp index = k-1
     nums[i] = temp[i - (n - k)];
   }
 
