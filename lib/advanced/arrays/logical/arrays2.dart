@@ -110,7 +110,6 @@ removeDuplicates(List<int> nums) {
 }
 
 // Find missing number
-
 missingNumber(nums) {
   // // o(n^2)
   // var hashmap = {};
@@ -142,11 +141,11 @@ missingNumber(nums) {
 
 // Union of two sorted arrays
 /*
-Given two sorted arrays nums1 and nums2, return an array that contains the union of these two arrays. The elements in the union must be in ascending order.
+Given two sorted arrays nums1 and nums2, return an array that contains the union of these two arrays.
+The elements in the union must be in ascending order.
 
-
-
-The union of two arrays is an array where all values are distinct and are present in either the first array, the second array, or both.
+The union of two arrays is an array where all values are distinct and are present in either the first array,
+ the second array, or both.
 */
 unionArray(nums1, nums2) {
   var hashMap = {};
@@ -168,8 +167,8 @@ unionArray(nums1, nums2) {
 
 // Intersection of two sorted arrays
 /*
-Given two sorted arrays, nums1 and nums2, return an array containing the intersection of these two arrays. Each element in the result must appear as many times as it appears in both arrays.
-
+Given two sorted arrays, nums1 and nums2, return an array containing the intersection of these two arrays.
+Each element in the result must appear as many times as it appears in both arrays.
 
 The intersection of two arrays is an array where all values are present in both arrays.
 */
@@ -220,7 +219,8 @@ List<int> intersectionArray(List<int> nums1, List<int> nums2) {
 /*
 Given an integer array nums of size n, return the majority element of the array.
 
-The majority element of an array is an element that appears more than n/2 times in the array. The array is guaranteed to have a majority element.- [2,2,1,1,1,2,2],[6,5,5]
+The majority element of an array is an element that appears more than n/2 times in the array. 
+The array is guaranteed to have a majority element.- [2,2,1,1,1,2,2],[6,5,5]
 */
 
 int majorityElement(List<int> nums) {
@@ -253,7 +253,8 @@ int majorityElement(List<int> nums) {
 /*
 Given an integer array nums, return a list of all the leaders in the array.
 
-A leader in an array is an element whose value is strictly greater than all elements to its right in the given array. The rightmost element is always a leader. The elements in the leader array must appear in the order they appear in the nums array.
+A leader in an array is an element whose value is strictly greater than all elements to its right in the given array.
+The rightmost element is always a leader. The elements in the leader array must appear in the order they appear in the nums array.
 
 Input: nums = [1, 2, 5, 3, 1, 2]
 
@@ -264,28 +265,52 @@ Input: nums = [-3, 4, 5, 1, -4, -5]
 Output: [5, 1, -4, -5]
 */
 
+// List<int> leaders(List<int> nums) {
+//   List<int> res = [];
+//   var leader = -double.maxFinite.toInt();
+//   for (var i = nums.length - 1; i >= 0; i--) {
+//     if (i == nums.length - 1) {
+//       res.add(nums[i]);
+//       leader = nums[i];
+//       continue;
+//     }
+//     if (nums[i] > leader) {
+//       res.add(nums[i]);
+//       leader = nums[i];
+//     }
+//   }
+//   // descending sort
+//   res.sort((a, b) => b.compareTo(a));
+//   return res;
+// }
+
 List<int> leaders(List<int> nums) {
-  List<int> res = [];
-  var leader = -double.maxFinite.toInt();
-  for (var i = nums.length - 1; i >= 0; i--) {
-    if (i == nums.length - 1) {
-      res.add(nums[i]);
-      leader = nums[i];
-      continue;
-    }
-    if (nums[i] > leader) {
-      res.add(nums[i]);
-      leader = nums[i];
+  List<int> result = [];
+
+  // Track maximum from right side
+  int maxFromRight = nums[nums.length - 1];
+
+  // Last element is always a leader
+  result.add(maxFromRight);
+
+  // Traverse from second last to first element
+  for (int i = nums.length - 2; i >= 0; i--) {
+    // If current element is greater than max from right, it's a leader
+    if (nums[i] > maxFromRight) {
+      result.add(nums[i]); // Add to result (will be in reverse order)
+      maxFromRight = nums[i]; // Update max from right
     }
   }
-  // descending sort
-  res.sort((a, b) => b.compareTo(a));
-  return res;
+
+  // Reverse the result to get correct order
+  // Since we traversed right to left, we need to reverse
+  return result.reversed.toList();
 }
 
 // Rearrange array elements by sign
 /*
-Given an integer array nums of even length consisting of an equal number of positive and negative integers.Return the answer array in such a way that the given conditions are met:
+Given an integer array nums of even length consisting of an equal number of positive and negative integers.
+Return the answer array in such a way that the given conditions are met:
 
 Every consecutive pair of integers have opposite signs.
 
@@ -309,8 +334,8 @@ List<int> rearrangeArray(List<int> nums) {
   print(neg);
 
   for (var i = 0; i < nums.length / 2; i++) {
-    nums[2 * i] = pos[i];
-    nums[(2 * i) + 1] = neg[i];
+    nums[2 * i] = pos[i]; //even
+    nums[(2 * i) + 1] = neg[i]; //odd
   }
 
   return nums;
@@ -321,7 +346,9 @@ List<int> rearrangeArray(List<int> nums) {
 Given an M * N matrix, print the elements in a clockwise spiral manner.
 
 Return an array with the elements in the order of their appearance when printed in a spiral manner.
-Input: matrix = [[1, 2, 3], [4 ,5 ,6], [7, 8, 9]]
+Input: matrix = [[1, 2, 3],
+                 [4 ,5 ,6],
+                [7, 8, 9]]
 
 Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]
 
