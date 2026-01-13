@@ -6,15 +6,15 @@ void main() {
   //   [4, 5, 6],
   //   [7, 8, 9]
   // ]);
-  // rotate([
-  //   [5, 1, 9, 11],
-  //   [2, 4, 8, 10],
-  //   [13, 3, 6, 7],
-  //   [15, 14, 12, 16]
-  // ]);
+  rotate([
+    [5, 1, 9, 11],
+    [2, 4, 8, 10],
+    [13, 3, 6, 7],
+    [15, 14, 12, 16]
+  ]);
 
-  // var sum2 = twoSum([2, 7, 11, 15], 9);
-  // print(sum2);
+  var sum2 = twoSum([2, 7, 11, 15], 9);
+  print(sum2);
 
   var threeSumvar = threeSum([2, -2, 0, 3, -3, 5]);
   print(threeSumvar);
@@ -55,37 +55,99 @@ Given an N * N 2D integer matrix, rotate the matrix by 90 degrees clockwise.
 
 The rotation must be done in place, meaning the input 2D matrix must be modified directly.
 
-Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Input: matrix = [[1,2,3],
+                [4,5,6],
+                [7,8,9]]
 Output: [[7,4,1],[8,5,2],[9,6,3]]
 
 */
 // Transpose the matrix
 // Reverse each row of the matrix
+// void rotate(List<List<int>> matrix) {
+//   var n = matrix.length;
+//   // Transpose the matrix
+//   for (var i = 0; i < n - 1; i++) {
+//     for (var j = i + 1; j < n; j++) {
+//       // Swap elements across the diagonal
+//       var temp = matrix[i][j];
+//       matrix[i][j] = matrix[j][i];
+//       matrix[j][i] = temp;
+//     }
+//   }
+//   print(matrix);
+
+//   for (var i = 0; i < n; i++) {
+//     matrix[i] = matrix[i].reversed.toList();
+//   }
+
+//   print(matrix);
+// }
+/*
+
+Step-by-Step Example:
+
+Input:
+matrix = [[1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9]]
+
+Step 1: Transpose (swap across diagonal)
+text
+Original:           After Transpose:
+[1, 2, 3]          [1, 4, 7]
+[4, 5, 6]    →     [2, 5, 8]  
+[7, 8, 9]          [3, 6, 9]
+
+Swaps performed:
+- (0,1) ↔ (1,0): 2 ↔ 4
+- (0,2) ↔ (2,0): 3 ↔ 7
+- (1,2) ↔ (2,1): 6 ↔ 8
+
+
+Step 2: Reverse each row
+text
+After Transpose:   After Reversing Rows:
+[1, 4, 7]          [7, 4, 1]
+[2, 5, 8]    →     [8, 5, 2]
+[3, 6, 9]          [9, 6, 3]
+
+Final result (90° clockwise rotation) ✓
+*/
 void rotate(List<List<int>> matrix) {
   var n = matrix.length;
-  // Transpose the matrix
+
+  // STEP 1: TRANSPOSE THE MATRIX (swap elements across main diagonal)
+  // Transpose means: convert rows to columns
+  // Example: element at (i,j) moves to (j,i)
   for (var i = 0; i < n - 1; i++) {
     for (var j = i + 1; j < n; j++) {
-      // Swap elements across the diagonal
+      // Swap element at (i,j) with element at (j,i)
+      // This reflects the matrix across its main diagonal
       var temp = matrix[i][j];
       matrix[i][j] = matrix[j][i];
       matrix[j][i] = temp;
     }
   }
-  print(matrix);
 
+  print("After transpose: $matrix");
+
+  // STEP 2: REVERSE EACH ROW
+  // Reversing each row after transpose gives 90° clockwise rotation
   for (var i = 0; i < n; i++) {
+    // Reverse the i-th row
     matrix[i] = matrix[i].reversed.toList();
   }
 
-  print(matrix);
+  print("After reversing rows (final): $matrix");
 }
 
 // Two Sum
 /*
-Given an array of integers nums and an integer target. Return the indices(0 - indexed) of two elements in nums such that they add up to target.
+Given an array of integers nums and an integer target.
+Return the indices(0 - indexed) of two elements in nums such that they add up to target.
 
-Each input will have exactly one solution, and the same element cannot be used twice. Return the answer in increasing order.
+Each input will have exactly one solution, and the same element cannot be used twice. 
+Return the answer in increasing order.
 
 Examples:
 Input: nums = [1, 6, 2, 10, 3], target = 7
@@ -121,7 +183,9 @@ i != j, i != k, and j != k
 
 nums[i] + nums[j] + nums[k] == 0.
 
-Notice that the solution set must not contain duplicate triplets. One element can be a part of multiple triplets. The output and the triplets can be returned in any order.
+Notice that the solution set must not contain duplicate triplets. 
+One element can be a part of multiple triplets. 
+The output and the triplets can be returned in any order.
 
 Examples:
 Input: nums = [2, -2, 0, 3, -3, 5]
@@ -272,7 +336,35 @@ Index 0 to low -1 contains 0
 Index low to mid - 1 contains 1
 Index high +1 to sizeOfArray - 1 contains 2.
 
-The middle part i.e. mid to high is the unsorted segment. So, this part is a mix of 0's, 1's and 2's. Follow the rules mentioned in approach and image below and sort the array.
+The middle part i.e. mid to high is the unsorted segment. 
+So, this part is a mix of 0's, 1's and 2's. Follow the rules mentioned in approach and image below and sort the array.
+
+Why This Algorithm Works (Invariants):
+Throughout the algorithm, these invariants are maintained:
+
+0's section: [0..low-1] contains only 0's
+
+1's section: [low..mid-1] contains only 1's
+
+Unprocessed section: [mid..high] contains mixed 0's, 1's, 2's
+
+2's section: [high+1..end] contains only 2's
+
+Time & Space Complexity:
+Time Complexity: O(n) - Single pass through array
+
+Space Complexity: O(1) - In-place sorting, only 3 pointers used
+
+Key Insights:
+Dutch National Flag Problem: Classic computer science problem
+
+Three-way partitioning: Efficiently separates 0's, 1's, and 2's
+
+One-pass algorithm: Processes each element at most once
+
+In-place: No extra arrays needed
+
+Optimal: Beats O(n log n) sorting algorithms
 */
 
 List<int> sortColors(List<int> nums) {
@@ -298,6 +390,54 @@ List<int> sortColors(List<int> nums) {
       var temp = nums[mid];
       nums[mid] = nums[high];
       nums[high] = temp;
+      high--;
+    }
+  }
+  return nums;
+}
+
+List<int> sortColorsWithComments(List<int> nums) {
+  // 3-pointer solution - Dutch National Flag algorithm
+  // low: boundary for 0's (all elements before low are 0)
+  // mid: current element being examined
+  // high: boundary for 2's (all elements after high are 2)
+  var low = 0;
+  var mid = 0;
+  var high = nums.length - 1;
+
+  // Process the unsorted segment (mid to high)
+  while (mid <= high) {
+    // Case 1: Current element is 0
+    if (nums[mid] == 0) {
+      // Swap current element with element at low pointer
+      // This moves 0 to the beginning section
+      var temp = nums[mid];
+      nums[mid] = nums[low];
+      nums[low] = temp;
+
+      // Both low and mid move forward
+      // low moves because we placed a 0 at low position
+      // mid moves because we've processed current element
+      low++;
+      mid++;
+    }
+    // Case 2: Current element is 1
+    else if (nums[mid] == 1) {
+      // 1 is already in correct position (middle section)
+      // Just move mid pointer forward
+      mid++;
+    }
+    // Case 3: Current element is 2
+    else {
+      // Swap current element with element at high pointer
+      // This moves 2 to the end section
+      var temp = nums[mid];
+      nums[mid] = nums[high];
+      nums[high] = temp;
+
+      // Only high moves backward
+      // mid doesn't move because we need to examine the new element
+      // that came from high position (could be 0, 1, or 2)
       high--;
     }
   }
