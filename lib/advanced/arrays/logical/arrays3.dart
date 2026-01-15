@@ -30,7 +30,7 @@ void main() {
 
   nextPermutation([1, 2, 3]);
 
-  var majorityElementVar = majorityElement([1, 2]);
+  var majorityElementVar = majorityElement([1, 2, 1, 1, 3, 2]);
   print(majorityElementVar);
 
   var findMissingRepeatingNumbersVar =
@@ -46,7 +46,18 @@ void main() {
   var maxProductVar = maxProduct([4, 5, 3, 7, 1, 2]);
   print(maxProductVar);
 
-  mergeTwoSortedArrays([1, 2, 3, 0, 0, 0], 6, [2, 5, 6], 3);
+  /*
+The Actual Problem Statement - mergeTwoSortedArraysComments
+Looking at the problem again:
+"nums1 has a length of m + n, where the first m elements denote the elements of nums1 
+and rest are 0s."
+
+This means when you receive nums1, it should already have the extra space! 
+You need to initialize it with the right size.
+
+  */
+
+  mergeTwoSortedArraysComments([1, 2, 3, 0, 0, 0, 0, 0, 0], 6, [2, 5, 6], 3);
 }
 
 // Rotate matrix by 90 degrees
@@ -446,9 +457,24 @@ List<int> sortColorsWithComments(List<int> nums) {
 
 // Kadane's Algorithm -  Maximum Subarray
 /*
-Given an integer array nums, find the subarray with the largest sum and return the sum of the elements present in that subarray.
+Given an integer array nums, find the subarray with the largest sum and 
+return the sum of the elements present in that subarray.
 
 A subarray is a contiguous non-empty sequence of elements within an array.
+
+Time & Space Complexity:
+Time Complexity: O(n) - Single pass through array
+
+Space Complexity: O(1) - Only uses a few variables
+
+Key Insights of Kadane's Algorithm:
+Local vs Global Maximum: Track both current sum and overall maximum
+
+Reset Strategy: When current sum becomes negative, start fresh (negative sums won't help future sums)
+
+Contiguous Requirement: Subarray must be contiguous, so we can't skip elements
+
+
 */
 int maxSubArray(List<int> nums) {
   int max = -double.maxFinite.toInt();
@@ -487,6 +513,55 @@ int maxSubArray(List<int> nums) {
   return max;
 }
 
+int maxSubArrayComments(List<int> nums) {
+  // Initialize maximum sum with smallest possible integer
+  int maxSum = -double.maxFinite.toInt(); // Or use: 1 << 31 for 32-bit min
+
+  // Current running sum
+  int currentSum = 0;
+
+  // Track start index of current subarray
+  int start = 0;
+
+  // Track indices of maximum subarray found so far
+  int subStart = -1;
+  int subEnd = -1;
+
+  // Iterate through the array
+  for (var i = 0; i < nums.length; i++) {
+    // If currentSum is 0, we're starting a new potential subarray
+    if (currentSum == 0) {
+      start = i; // Mark start of new subarray
+    }
+
+    // Add current element to running sum
+    currentSum += nums[i];
+
+    // Update maximum sum and indices if we found a better subarray
+    if (currentSum > maxSum) {
+      maxSum = currentSum;
+      subStart = start; // Start index of max subarray
+      subEnd = i; // End index of max subarray
+    }
+
+    // Kadane's key insight: if current sum becomes negative, reset it to 0
+    // A negative sum will only decrease future sums
+    if (currentSum < 0) {
+      currentSum = 0;
+    }
+  }
+
+  // Print the maximum subarray (optional)
+  var subArray = [];
+  for (var i = subStart; i <= subEnd; i++) {
+    subArray.add(nums[i]);
+  }
+  print("Maximum subarray: $subArray");
+  print("Indices: $subStart to $subEnd");
+
+  return maxSum;
+}
+
 // Next Permutation
 /*
 A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
@@ -497,9 +572,11 @@ For example, for arr = [1,2,3], the following are all the permutations of arr:
 
 The next permutation of an array of integers is the next lexicographically greater permutation of its integers.
 
-More formally, if all the permutations of the array are sorted in lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted order.
+More formally, if all the permutations of the array are sorted in lexicographical order, 
+then the next permutation of that array is the permutation that follows it in the sorted order.
 
-If such arrangement is not possible (i.e., the array is the last permutation), then rearrange it to the lowest possible order (i.e., sorted in ascending order).
+If such arrangement is not possible (i.e., the array is the last permutation), 
+then rearrange it to the lowest possible order (i.e., sorted in ascending order).
 
 You must rearrange the numbers in-place and use only constant extra memory.
 
@@ -580,7 +657,9 @@ void reverse(List<int> nums, int start, int end) {
 
 // Majority Element-II
 /*
-Given an integer array nums of size n. Return all elements which appear more than n/3 times in the array. The output can be returned in any order.
+Given an integer array nums of size n. 
+Return all elements which appear more than n/3 times in the array. 
+The output can be returned in any order.
 
 Examples:
 Input: nums = [1, 2, 1, 1, 3, 2]
@@ -595,17 +674,22 @@ Therefore the elements appearing 3 or more times is : [1]
 */
 List<int> majorityElement(List<int> nums) {
   var hashMap = {};
-  for (var i = 0; i <= nums.length - 1; i++) {
-    print(hashMap);
-    if (!hashMap.containsKey(nums[i])) {
-      hashMap[nums[i]] = 1;
-    } else {
-      hashMap[nums[i]] = hashMap[nums[i]] + 1;
-    }
+  // for (var i = 0; i <= nums.length - 1; i++) {
+  //   print(hashMap);
+  //   if (!hashMap.containsKey(nums[i])) {
+  //     hashMap[nums[i]] = 1;
+  //   } else {
+  //     hashMap[nums[i]] = hashMap[nums[i]] + 1;
+  //   }
+  // }
+  for (var num in nums) {
+    hashMap[num] = (hashMap[num] ?? 0) + 1;
   }
 
   print(hashMap);
   var n = nums.length;
+  // Your current approach with +1 is correct and efficient!
+  //The +1 ensures you get the correct threshold for "more than n/3 times".
   var minAppearance = (n ~/ 3) + 1;
   print(minAppearance);
 
@@ -626,9 +710,12 @@ List<int> majorityElement(List<int> nums) {
 
 // Find the repeating and missing number
 /*
- * Given an integer array nums of size n containing values from [1, n] and each value appears exactly once in the array, except for A, which appears twice and B which is missing.
+ * Given an integer array nums of size n containing values from [1, n] and 
+ * each value appears exactly once in the array, except for A, which appears twice and 
+ * B which is missing.
 
-Return the values A and B, as an array of size 2, where A appears in the 0-th index and B in the 1st index.
+Return the values A and B, as an array of size 2, where A appears in the 0-th index and
+ B in the 1st index.
 
 Note: You are not allowed to modify the original array.
 
@@ -714,6 +801,12 @@ nums[2], nums[3], values: 7 > 1 & indexes: 2 < 3
 nums[2], nums[4], values: 7 > 3 & indexes: 2 < 4
 
 nums[2], nums[5], values: 7 > 5 & indexes: 2 < 5
+
+
+Time & Space Complexity
+Time: O(n log n) - standard merge sort complexity
+
+Space: O(n) - for the temporary array during merge
  */
 
 // solve using merge sort
@@ -726,7 +819,7 @@ int mergeSort(List<int> nums, int low, int high) {
     return count;
   }
   var mid = (high + low) ~/ 2;
-  // int count = 0;
+
   // divide
   count += mergeSort(nums, low, mid);
   count += mergeSort(nums, mid + 1, high);
@@ -747,6 +840,8 @@ int merge(List<int> nums, int low, int mid, int high) {
       left++;
     } else {
       // Count inversions
+      // KEY INSIGHT: All remaining elements in left half are > nums[right]
+      // So each forms an inversion with nums[right]
       count += (mid - left + 1);
       arr.add(nums[right]);
       right++;
@@ -781,16 +876,20 @@ int numberOfInversions(List<int> nums) {
 /*
 Given an integer array nums. Return the number of reverse pairs in the array.
 
-
-
 An index pair (i, j) is called a reverse pair if:
-
-
 
 0 <= i < j < nums.length
 
+nums[i] > 2 * nums[j]
+
+Understanding the Problem
+We need to count pairs (i, j) where:
+
+0 <= i < j < nums.length
 
 nums[i] > 2 * nums[j]
+
+This is similar to counting inversions, but with a stronger condition (2× instead of just >).
 
 Examples:
 Input: nums = [6, 4, 1, 2, 7]
@@ -806,28 +905,49 @@ The reverse pairs are:
 (0, 3) : nums[0] = 6, nums[3] = 2, 6 > 2 * 2
 
 (1, 2) : nums[1] = 4, nums[2] = 1, 4 > 2 * 1
+
+Time Complexity Analysis
+Counting step (countPairs): O(n) for each merge level
+
+For each element in left half, right pointer moves at most O(n) total
+
+Uses two-pointer technique for efficiency
+
+Merge step: O(n) for each merge level
+
+Total: O(n log n)
+
+Merge sort has log n levels
+
+Each level processes all n elements
+
+Total = O(n) × O(log n) = O(n log n)
+
+Space Complexity
+O(n) for temporary array during merge
+
+O(log n) for recursion stack (could be optimized to iterative)
 */
 
 // solve using merge sort
-
 int reversePairs(List<int> nums) {
   return mergeSortReversePairs(nums, 0, nums.length - 1);
 }
 
 int mergeSortReversePairs(List<int> nums, int low, int high) {
   int count = 0;
-  // base condition
+  // base condition // base condition: single element or empty array
   if (low >= high) {
     // return nums;
     return count;
   }
   var mid = (high + low) ~/ 2;
-  // divide
+  // divide  // STEP 1: Divide and recursively count in left and right halves
   count += mergeSortReversePairs(nums, low, mid);
   count += mergeSortReversePairs(nums, mid + 1, high);
-  // count calculation
+  // count calculation // STEP 2: Count reverse pairs across the two halves
   count += countPairs(nums, low, mid, high);
-  // merge
+  // merge  // STEP 3: Merge the sorted halves
   mergeReversePairs(nums, low, mid, high);
   return count;
 }
@@ -838,9 +958,11 @@ int countPairs(List<int> nums, int low, int mid, int high) {
   int right = mid + 1;
 
   for (int i = low; i <= mid; i++) {
+    // Move right pointer while condition nums[i] > 2 * nums[right] holds
     while (right <= high && nums[i] > 2 * nums[right]) {
       right++;
     }
+    // All elements from mid+1 to right-1 satisfy the condition
     cnt += right - (mid + 1);
   }
 
@@ -883,7 +1005,8 @@ List<int> mergeReversePairs(List<int> nums, int low, int mid, int high) {
 
 // Maximum Product Subarray in an Array
 /*
-Given an integer array nums. Find the subarray with the largest product, and return the product of the elements present in that subarray.
+Given an integer array nums. Find the subarray with the largest product, and 
+return the product of the elements present in that subarray.
 
 A subarray is a contiguous non-empty sequence of elements within an array.
 
@@ -905,8 +1028,15 @@ Output: 0
 
 Explanation:
 
-The largest product is achieved with the following subarrays [0], [-5, 0], [0, -2], [-5, 0, -2].
+The largest product is achieved with the following subarrays 
+[0], [-5, 0], [0, -2], [-5, 0, -2].
 
+Time and Space Complexity
+Your prefix/suffix approach:
+
+Time: O(n) - single pass through array
+
+Space: O(1) - only uses a few variables
 */
 
 int maxProduct(List<int> nums) {
@@ -930,6 +1060,87 @@ int maxProduct(List<int> nums) {
   return productAnswer;
 }
 
+// Alternative: Kadane's Algorithm for Products
+// Here's another common approach that might be clearer:
+
+/*
+Understanding maxProd and minProd in Kadane's Algorithm for Maximum Product
+Core Concept
+We need to track BOTH maximum and minimum products ending at each position because:
+
+Negative numbers can flip signs: Multiplying by a negative makes large positive → large negative, and large negative → large positive
+
+We need to be prepared for when we encounter another negative in the future
+
+What Each Variable Represents
+maxProd
+Definition: Maximum product of a subarray ending at current position i
+
+Why track it? To know the best positive product we can extend forward
+
+minProd
+Definition: Minimum product (most negative) of a subarray ending at current position i
+
+Why track it? A very negative number × a negative number = a very positive number!
+
+Visual Example
+Let's trace through nums = [2, 3, -2, 4]:
+
+Step 0: nums[0] = 2
+maxProd = 2  (best product ending at index 0: [2])
+minProd = 2  (worst product ending at index 0: [2])
+result = 2
+
+Step 1: nums[1] = 3 (positive)
+maxProd = max(3, 2*3) = max(3, 6) = 6
+minProd = min(3, 2*3) = min(3, 6) = 3
+result = max(2, 6) = 6
+
+Step 2: nums[2] = -2 (NEGATIVE - SWAP!)
+Before calculations: swap maxProd and minProd
+maxProd = 3 (was minProd)
+minProd = 6 (was maxProd)
+
+Now calculate:
+maxProd = max(-2, 3 * -2) = max(-2, -6) = -2
+minProd = min(-2, 6 * -2) = min(-2, -12) = -12
+result = max(6, -2) = 6
+
+Step 3: nums[3] = 4 (positive)
+maxProd = max(4, -2*4) = max(4, -8) = 4
+minProd = min(4, -12*4) = min(4, -48) = -48
+result = max(6, 4) = 6
+
+Final answer: 6 ✓
+
+*/
+int maxProductAlternative(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  int maxProd = nums[0];
+  int minProd = nums[0]; // Track minimum product (for negative numbers)
+  int result = nums[0];
+
+  for (int i = 1; i < nums.length; i++) {
+    // If current number is negative, swap max and min
+    // Because negative * minProd might become new max
+    if (nums[i] < 0) {
+      int temp = maxProd;
+      maxProd = minProd;
+      minProd = temp;
+    }
+
+    // Update max and min products ending at position i
+    maxProd = max(nums[i], maxProd * nums[i]);
+    minProd = min(nums[i], minProd * nums[i]);
+
+    // Update overall result
+    result = max(result, maxProd);
+  }
+
+  return result;
+}
+
 // Merge two sorted arrays without extra space
 /*
 Given two integer arrays nums1 and nums2. Both arrays are sorted in non-decreasing order.
@@ -951,6 +1162,11 @@ Output: [-5, -3, -2, 1, 4, 5, 8]
 Explanation:
 
 The merged array is: [-5, -3, -2, 1, 4, 5, 8], where [-5, -2, 4, 5] are from nums1 and [-3, 1, 8] are from nums2
+
+Time & Space Complexity
+Time Complexity: O(m + n) - Each element is processed exactly once
+
+Space Complexity: O(1) - No extra space used (in-place
 */
 void mergeTwoSortedArrays(List<int> nums1, int m, List<int> nums2, int n) {
   int i = m - 1;
@@ -969,5 +1185,33 @@ void mergeTwoSortedArrays(List<int> nums1, int m, List<int> nums2, int n) {
     }
     k--;
   }
+  print(nums1);
+}
+
+// The key insight is to fill from the back to avoid overwriting, and
+//to stop when nums2 is exhausted since the remaining nums1 elements are already
+//in their correct positions.
+void mergeTwoSortedArraysComments(
+    List<int> nums1, int m, List<int> nums2, int n) {
+  // Start from the last valid elements of both arrays
+  int i = m - 1; // Last index of valid elements in nums1
+  int j = n - 1; // Last index of nums2
+  int k = m + n - 1; // Last index of combined array (nums1)
+
+  // Process until all elements from nums2 are placed
+  while (j >= 0) {
+    // Compare elements from the end of both arrays
+    if (i >= 0 && nums1[i] > nums2[j]) {
+      // nums1 has larger element, place it at position k
+      nums1[k] = nums1[i];
+      i--; // Move to previous element in nums1
+    } else {
+      // nums2 has larger (or equal) element, OR nums1 is exhausted
+      nums1[k] = nums2[j];
+      j--; // Move to previous element in nums2
+    }
+    k--; // Move to previous position in nums1
+  }
+
   print(nums1);
 }
