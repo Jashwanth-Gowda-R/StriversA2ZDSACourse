@@ -1068,7 +1068,8 @@ Understanding maxProd and minProd in Kadane's Algorithm for Maximum Product
 Core Concept
 We need to track BOTH maximum and minimum products ending at each position because:
 
-Negative numbers can flip signs: Multiplying by a negative makes large positive → large negative, and large negative → large positive
+Negative numbers can flip signs: 
+Multiplying by a negative makes large positive → large negative, and large negative → large positive
 
 We need to be prepared for when we encounter another negative in the future
 
