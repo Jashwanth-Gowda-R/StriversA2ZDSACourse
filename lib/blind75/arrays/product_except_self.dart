@@ -13,6 +13,8 @@ You must write an algorithm that runs in O(n) time and without using the divisio
 
  
 
+ 
+
 Example 1:
 
 Input: nums = [1,2,3,4]
@@ -27,7 +29,7 @@ Time complexity: Time O(N)
 Space complexity:Space O(1)
 
 */
-
+// optimal solution - space o(1) and time o(n)
 List<int> productExceptSelf(List<int> nums) {
   int n = nums.length;
 
@@ -56,4 +58,37 @@ List<int> productExceptSelf(List<int> nums) {
   }
 
   return result;
+}
+
+// time and space  - o(n)
+List<int> productExceptSelfFirstApproch(List<int> nums) {
+  List<int> res = List.filled(nums.length, 1);
+
+  List<int> prefix = List.filled(nums.length, 1);
+  List<int> postfix = List.filled(nums.length, 1);
+
+  int pre = 1;
+  int post = 1;
+
+  // fill pre to prefix list and then multiple by nums[i] to pre
+  for (var i = 0; i < nums.length; i++) {
+    prefix[i] = pre;
+    pre = nums[i] * pre;
+  }
+  print(prefix);
+
+  // fill post with postfix[i] and then multiple by nums[i] to pre
+  for (var i = nums.length - 1; i >= 0; i--) {
+    postfix[i] = post;
+    post = nums[i] * post;
+  }
+  print(postfix);
+
+  // output - res[i] = prefix[i] * postfix[i];
+  for (var i = 0; i < nums.length; i++) {
+    res[i] = prefix[i] * postfix[i];
+  }
+  print(res);
+
+  return res;
 }
